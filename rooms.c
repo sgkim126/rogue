@@ -416,7 +416,7 @@ leave_room(coord *cp) {
                      * to check for monster, we have to strip out
                      * standout bit
                      */
-                    if (isupper(toascii(ch))) {
+                    if (isupper(__toascii(ch))) {
                         if (on(player, SEEMONST)) {
                             standout();
                             addch(ch);

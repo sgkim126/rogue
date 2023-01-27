@@ -112,12 +112,33 @@
 #include <signal.h>
 #include "extern.h"
 
-#if !defined(PATH_MAX) && defined(_MAX_PATH)
+#ifndef PATHMAX
+
+#if defined(_MAX_PATH)
 #define PATH_MAX _MAX_PATH
+#elif defined(_PATH_MAX)
+#define PATH_MAX _PATH_MAX
+#elif defined(__linux__)
+
+#include <linux/limits.h>
+
 #endif
 
-#if !defined(PATH_MAX) && defined(_PATH_MAX)
-#define PATH_MAX _PATH_MAX
+#endif
+
+
+#if defined(HAVE_LOADAV)
+extern int loadav(double[]);
+#elif defined(HAVE_GETLOADAVG)
+
+extern int getloadavg(double[], int);
+
+#endif
+
+#ifdef HAVE_GETPASS
+
+extern char *getpass(const char *);
+
 #endif
 
 void
@@ -580,7 +601,7 @@ directory_exists(char *dirname) {
     struct stat sb;
 
     if (stat(dirname, &sb) == 0) /* path exists */
-        return (sb.st_mode & S_IFDIR);
+        return (sb.st_mode &__S_IFDIR);
 
     return (0);
 }
@@ -661,7 +682,7 @@ md_getpass(char *prompt) {
 
    return password_buffer;
 #else
-    return ((char *) getpass(prompt));
+    return getpass(prompt);
 #endif
 }
 

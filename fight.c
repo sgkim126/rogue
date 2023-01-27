@@ -330,7 +330,7 @@ set_mname(THING *tp) {
         return (terse ? "it" : "something");
     else if (on(player, ISHALU)) {
         move(tp->t_pos.y, tp->t_pos.x);
-        ch = toascii(inch());
+        ch = __toascii(inch());
         if (!isupper(ch))
             ch = rnd(26);
         else
