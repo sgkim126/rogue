@@ -32,7 +32,8 @@ fix_stick(THING *cur) {
     switch (cur->o_which) {
         case WS_LIGHT:
             cur->o_charges = rnd(10) + 10;
-            otherwise:
+            break;
+        default:
             cur->o_charges = rnd(5) + 3;
     }
 }
@@ -80,7 +81,8 @@ do_zap() {
                     addmsg(" by a shimmering %s light", pick_color("blue"));
                 endmsg();
             }
-            when WS_DRAIN:
+            break;
+        case WS_DRAIN:
             /*
              * take away 1/2 of hero's hit points, then take it away
              * evenly from the monsters in the room (or next to hero
@@ -91,7 +93,8 @@ do_zap() {
                 return;
             } else
                 drain();
-            when WS_INVIS:
+            break;
+        case WS_INVIS:
         case WS_POLYMORPH:
         case WS_TELAWAY:
         case WS_TELTO:
@@ -116,7 +119,7 @@ do_zap() {
                         THING *pp;
 
                         pp = tp->t_pack;
-                        detach(mlist, tp);
+                        detach(&mlist, tp);
                         if (see_monst(tp))
                             mvaddch(y, x, chat(y, x));
                         oldch = tp->t_oldch;
@@ -155,7 +158,8 @@ do_zap() {
                     }
                 }
             }
-            when WS_MISSILE:
+            break;
+        case WS_MISSILE:
             ws_info[WS_MISSILE].oi_know = TRUE;
             bolt.o_type = '*';
             strncpy(bolt.o_hurldmg, "1x4", sizeof(bolt.o_hurldmg));
@@ -172,7 +176,8 @@ do_zap() {
                 msg("missle vanishes");
             else
                 msg("the missle vanishes with a puff of smoke");
-            when WS_HASTE_M:
+            break;
+        case WS_HASTE_M:
         case WS_SLOW_M:
             y = hero.y;
             x = hero.x;
@@ -197,7 +202,8 @@ do_zap() {
                 delta.x = x;
                 runto(&delta);
             }
-            when WS_ELECT:
+            break;
+        case WS_ELECT:
         case WS_FIRE:
         case WS_COLD:
             if (obj->o_which == WS_ELECT)
@@ -208,12 +214,14 @@ do_zap() {
                 name = "ice";
             fire_bolt(&hero, &delta, name);
             ws_info[obj->o_which].oi_know = TRUE;
-            when WS_NOP:
             break;
+        case WS_NOP:
+            break;
+        default:
 #ifdef MASTER
-            otherwise:
             msg("what a bizarre schtick!");
 #endif
+            break;
     }
     obj->o_charges--;
 }
@@ -290,10 +298,12 @@ fire_bolt(coord *start, coord *dir, char *name) {
     switch (dir->y + dir->x) {
         case 0:
             dirch = '/';
-            when 1:
+            break;
+        case 1:
         case -1:
             dirch = (dir->y == 0 ? '-' : '|');
-            when 2:
+            break;
+        case 2:
         case -2:
             dirch = '\\';
     }

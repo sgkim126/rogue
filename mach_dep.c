@@ -49,8 +49,6 @@
 #include <curses.h>
 #include "extern.h"
 
-#define NOOP(x) (x += 0)
-
 #ifndef NUMSCORES
 #define NUMSCORES 10
 #define NUMNAME "Ten"
@@ -212,7 +210,6 @@ is_symlink(char *sp) {
     else
         return ((sbuf2.st_mode & S_IFMT) != S_IFREG);
 #else
-    NOOP(sp);
     return FALSE;
 #endif
 }

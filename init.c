@@ -244,7 +244,7 @@ init_colors() {
     for (i = 0; i < MAXPOTIONS; i++) {
         do
             j = rnd(NCOLORS);
-        until (!used[j]);
+        while (used[j]);
         used[j] = TRUE;
         p_colors[i] = rainbow[j];
     }
@@ -295,7 +295,7 @@ init_stones() {
     for (i = 0; i < MAXRINGS; i++) {
         do
             j = rnd(NSTONES);
-        until (!used[j]);
+        while (used[j]);
         used[j] = TRUE;
         r_stones[i] = stones[j].st_name;
         ring_info[i].oi_worth += stones[j].st_value;

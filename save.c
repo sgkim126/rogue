@@ -111,7 +111,6 @@ gotfile:
 void
 auto_save(int sig) {
     FILE *savef;
-    NOOP(sig);
 
     md_ignoreallsignals();
     if (file_name[0] != '\0' && ((savef = fopen(file_name, "w")) != NULL ||

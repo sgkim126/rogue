@@ -61,7 +61,7 @@ new_monster(THING *tp, char type, coord *cp) {
 
     if ((lev_add = level - AMULETLEVEL) < 0)
         lev_add = 0;
-    attach(mlist, tp);
+    attach(&mlist, tp);
     tp->t_type = type;
     tp->t_disguise = type;
     tp->t_pos = *cp;
@@ -206,7 +206,7 @@ wake_monster(int y, int x) {
 void
 give_pack(THING *tp) {
     if (level >= max_level && rnd(100) < monsters[tp->t_type - 'A'].m_carry)
-        attach(tp->t_pack, new_thing());
+        attach(&tp->t_pack, new_thing());
 }
 
 /*

@@ -15,7 +15,7 @@
 #include "rogue.h"
 
 #define EMPTY 0
-#define DAEMON -1
+#define DAEMON (-1)
 #define MAXDAEMONS 20
 
 #define _X_ { EMPTY }

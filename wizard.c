@@ -53,14 +53,18 @@ whatis(bool insist, int type) {
     switch (obj->o_type) {
         case SCROLL:
             set_know(obj, scr_info);
-            when POTION:
+            break;
+        case POTION:
             set_know(obj, pot_info);
-            when STICK:
+            break;
+        case STICK:
             set_know(obj, ws_info);
-            when WEAPON:
+            break;
+        case WEAPON:
         case ARMOR:
             obj->o_flags |= ISKNOW;
-            when RING:
+            break;
+        case RING:
             set_know(obj, ring_info);
     }
     msg(inv_name(obj, FALSE));
@@ -161,7 +165,8 @@ create_obj() {
                 if (bless == '-')
                     obj->o_flags |= ISCURSED;
                 obj->o_arm = (bless == '-' ? -1 : rnd(2) + 1);
-                when R_AGGR:
+                break;
+            case R_AGGR:
             case R_TELEPORT:
                 obj->o_flags |= ISCURSED;
         }

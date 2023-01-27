@@ -14,7 +14,6 @@
 
 #undef lines
 
-#define NOOP(x) (x += 0)
 #define CCHAR(x) ( (char) (x & A_CHARTEXT) )
 /*
  * Maximum number of different things
@@ -49,9 +48,6 @@
 /*
  * All the fun defines
  */
-#define when        break;case
-#define otherwise    break;default
-#define until(expr)    while(!(expr))
 #define next(ptr)    (*ptr).l_next
 #define prev(ptr)    (*ptr).l_prev
 #define winat(y, x)    (moat(y,x) != NULL ? moat(y,x)->t_disguise : chat(y,x))
@@ -61,9 +57,6 @@
 #define pack        player.t_pack
 #define proom        player.t_room
 #define max_hp        player.t_stats.s_maxhp
-#define attach(a, b)    _attach(&a,b)
-#define detach(a, b)    _detach(&a,b)
-#define free_list(a)    _free_list(&a)
 #undef max
 #define max(a, b)    ((a) > (b) ? (a) : (b))
 #define on(thing, flag)    ((bool)(((thing).t_flags & (flag)) != 0))
@@ -505,11 +498,11 @@ extern struct obj_info arm_info[], pot_info[], ring_info[],
 /*
  * Function types
  */
-void _attach(THING **list, THING *item);
+void attach(THING **list, THING *item);
 
-void _detach(THING **list, THING *item);
+void detach(THING **list, THING *item);
 
-void _free_list(THING **ptr);
+void free_list(THING **ptr);
 
 void addmsg(char *fmt, ...);
 

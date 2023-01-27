@@ -60,13 +60,15 @@ read_scroll() {
              */
             player.t_flags |= CANHUH;
             msg("your hands begin to glow %s", pick_color("red"));
-            when S_ARMOR:
+            break;
+        case S_ARMOR:
             if (cur_armor != NULL) {
                 cur_armor->o_arm--;
                 cur_armor->o_flags &= ~ISCURSED;
                 msg("your armor glows %s for a moment", pick_color("silver"));
             }
-            when S_HOLD:
+            break;
+        case S_HOLD:
             /*
              * Hold monster scroll.  Stop all monsters within two spaces
              * from chasing after the hero.
@@ -93,7 +95,8 @@ read_scroll() {
                 scr_info[S_HOLD].oi_know = TRUE;
             } else
                 msg("you feel a strange sense of loss");
-            when S_SLEEP:
+            break;
+        case S_SLEEP:
             /*
              * Scroll which makes you fall asleep
              */
@@ -101,7 +104,8 @@ read_scroll() {
             no_command += rnd(SLEEPTIME) + 4;
             player.t_flags &= ~ISRUN;
             msg("you fall asleep");
-            when S_CREATE:
+            break;
+        case S_CREATE:
             /*
              * Create a monster:
              * First look in a circle around him, next try his room
@@ -133,7 +137,8 @@ read_scroll() {
                 obj = new_item();
                 new_monster(obj, randmonster(FALSE), &mp);
             }
-            when S_ID_POTION:
+            break;
+        case S_ID_POTION:
         case S_ID_SCROLL:
         case S_ID_WEAPON:
         case S_ID_ARMOR:
@@ -147,7 +152,8 @@ read_scroll() {
             msg("this scroll is an %s scroll", scr_info[obj->o_which].oi_name);
             whatis(TRUE, id_type[obj->o_which]);
         }
-            when S_MAP:
+            break;
+        case S_MAP:
             /*
              * Scroll of magic mapping.
              */
@@ -211,7 +217,8 @@ read_scroll() {
                             mvaddch(y, x, ch);
                     }
                 }
-            when S_FDET:
+            break;
+        case S_FDET:
             /*
              * Potion of gold detection
              */
@@ -228,18 +235,19 @@ read_scroll() {
                 show_win("Your nose tingles and you smell food.--More--");
             } else
                 msg("your nose tingles");
-            when S_TELEP:
+            break;
+        case S_TELEP: {
             /*
              * Scroll of teleportation:
              * Make him dissapear and reappear
              */
-        {
             cur_room = proom;
             teleport();
             if (cur_room != proom)
                 scr_info[S_TELEP].oi_know = TRUE;
+            break;
         }
-            when S_ENCH:
+        case S_ENCH:
             if (cur_weapon == NULL || cur_weapon->o_type != WEAPON)
                 msg("you feel a strange sense of loss");
             else {
@@ -251,37 +259,44 @@ read_scroll() {
                 msg("your %s glows %s for a moment",
                     weap_info[cur_weapon->o_which].oi_name, pick_color("blue"));
             }
-            when S_SCARE:
+            break;
+        case S_SCARE:
             /*
              * Reading it is a mistake and produces laughter at her
              * poor boo boo.
              */
             msg("you hear maniacal laughter in the distance");
-            when S_REMOVE:
+            break;
+        case S_REMOVE:
             uncurse(cur_armor);
             uncurse(cur_weapon);
             uncurse(cur_ring[LEFT]);
             uncurse(cur_ring[RIGHT]);
             msg(choose_str("you feel in touch with the Universal Onenes",
                            "you feel as if somebody is watching over you"));
-            when S_AGGR:
+            break;
+        case S_AGGR:
             /*
              * This scroll aggravates all the monsters on the current
              * level and sets them running towards the hero
              */
             aggravate();
             msg("you hear a high pitched humming noise");
-            when S_PROTECT:
+            break;
+        case S_PROTECT:
             if (cur_armor != NULL) {
                 cur_armor->o_flags |= ISPROT;
                 msg("your armor is covered by a shimmering %s shield",
                     pick_color("gold"));
             } else
                 msg("you feel a strange sense of loss");
+            break;
+        default:
 #ifdef MASTER
-            otherwise:
             msg("what a puzzling scroll!");
             return;
+#else
+            break;
 #endif
     }
     obj = orig_obj;

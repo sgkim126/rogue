@@ -71,7 +71,7 @@ do_passages() {
         if (j == 0) {
             do
                 r1 = &rdes[rnd(MAXROOMS)];
-            until (r1->ingraph);
+            while (!r1->ingraph);
         }
             /*
              * otherwise, connect new room to the graph, and draw a tunnel

@@ -120,8 +120,6 @@
 #define PATH_MAX _PATH_MAX
 #endif
 
-#define NOOP(x) (x += 0)
-
 void
 md_init() {
 #if defined(__INTERIX)
@@ -718,8 +716,6 @@ md_setdsuspchar(int c) {
     ioctl(1, TIOCGLTC, &ltc);
     ltc.t_dsuspc = c;
     ioctl(1, TIOCSLTC, &ltc);
-#else
-    NOOP(c);
 #endif
     return (0);
 }

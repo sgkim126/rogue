@@ -179,8 +179,8 @@ over:
         } else if (ce(this, *th->t_dest)) {
             for (obj = lvl_obj; obj != NULL; obj = next(obj))
                 if (th->t_dest == &obj->o_pos) {
-                    detach(lvl_obj, obj);
-                    attach(th->t_pack, obj);
+                    detach(&lvl_obj, obj);
+                    attach(&th->t_pack, obj);
                     chat(obj->o_pos.y, obj->o_pos.x) =
                             (th->t_room->r_flags & ISGONE) ? PASSAGE : FLOOR;
                     th->t_dest = find_dest(th);

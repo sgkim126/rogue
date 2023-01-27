@@ -24,7 +24,7 @@ int total = 0; /* total dynamic memory bytes */
  */
 
 void
-_detach(THING **list, THING *item) {
+detach(THING **list, THING *item) {
     if (*list == item)
         *list = next(item);
     if (prev(item) != NULL)
@@ -36,12 +36,12 @@ _detach(THING **list, THING *item) {
 }
 
 /*
- * _attach:
+ * attach:
  *      add an item to the head of a list
  */
 
 void
-_attach(THING **list, THING *item) {
+attach(THING **list, THING *item) {
     if (*list != NULL) {
         item->l_next = *list;
         (*list)->l_prev = item;
@@ -54,12 +54,12 @@ _attach(THING **list, THING *item) {
 }
 
 /*
- * _free_list:
+ * free_list:
  *      Throw the whole blamed thing away
  */
 
 void
-_free_list(THING **ptr) {
+free_list(THING **ptr) {
     THING *item;
 
     while (*ptr != NULL) {

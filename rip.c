@@ -306,30 +306,35 @@ total_winner() {
         switch (obj->o_type) {
             case FOOD:
                 worth = 2 * obj->o_count;
-                when WEAPON:
+                break;
+            case WEAPON:
                 worth = weap_info[obj->o_which].oi_worth;
                 worth *= 3 * (obj->o_hplus + obj->o_dplus) + obj->o_count;
                 obj->o_flags |= ISKNOW;
-                when ARMOR:
+                break;
+            case ARMOR:
                 worth = arm_info[obj->o_which].oi_worth;
                 worth += (9 - obj->o_arm) * 100;
                 worth += (10 * (a_class[obj->o_which] - obj->o_arm));
                 obj->o_flags |= ISKNOW;
-                when SCROLL:
+                break;
+            case SCROLL:
                 worth = scr_info[obj->o_which].oi_worth;
                 worth *= obj->o_count;
                 op = &scr_info[obj->o_which];
                 if (!op->oi_know)
                     worth /= 2;
                 op->oi_know = TRUE;
-                when POTION:
+                break;
+            case POTION:
                 worth = pot_info[obj->o_which].oi_worth;
                 worth *= obj->o_count;
                 op = &pot_info[obj->o_which];
                 if (!op->oi_know)
                     worth /= 2;
                 op->oi_know = TRUE;
-                when RING:
+                break;
+            case RING:
                 op = &ring_info[obj->o_which];
                 worth = op->oi_worth;
                 if (obj->o_which == R_ADDSTR || obj->o_which == R_ADDDAM ||
@@ -343,7 +348,8 @@ total_winner() {
                     worth /= 2;
                 obj->o_flags |= ISKNOW;
                 op->oi_know = TRUE;
-                when STICK:
+                break;
+            case STICK:
                 op = &ws_info[obj->o_which];
                 worth = op->oi_worth;
                 worth += 20 * obj->o_charges;
@@ -351,7 +357,8 @@ total_winner() {
                     worth /= 2;
                 obj->o_flags |= ISKNOW;
                 op->oi_know = TRUE;
-                when AMULET:
+                break;
+            case AMULET:
                 worth = 1000;
         }
         if (worth < 0)

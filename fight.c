@@ -177,7 +177,8 @@ attack(THING *mp) {
                      * If an aquator hits, you can lose armor class.
                      */
                     rust_armor(cur_armor);
-                    when 'I':
+                    break;
+                case 'I':
                     /*
                      * The ice monster freezes you
                      */
@@ -191,7 +192,8 @@ attack(THING *mp) {
                     no_command += rnd(2) + 2;
                     if (no_command > BORE_LEVEL)
                         death('h');
-                    when 'R':
+                    break;
+                case 'R':
                     /*
                      * Rattlesnakes have poisonous bites
                      */
@@ -209,7 +211,8 @@ attack(THING *mp) {
                                 msg("bite has no effect");
                         }
                     }
-                    when 'W':
+                    break;
+                case 'W':
                 case 'V':
                     /*
                      * Wraiths might drain energy levels, and Vampires
@@ -237,7 +240,8 @@ attack(THING *mp) {
                             death(mp->t_type);
                         msg("you suddenly feel weaker");
                     }
-                    when 'F':
+                    break;
+                case 'F':
                     /*
                      * Venus Flytrap stops the poor guy from moving
                      */
@@ -245,7 +249,8 @@ attack(THING *mp) {
                     sprintf(monsters['F' - 'A'].m_stats.s_dmg, "%dx1", ++vf_hit);
                     if (--pstats.s_hpt <= 0)
                         death('F');
-                    when 'L': {
+                    break;
+                case 'L': {
                     /*
                      * Leperachaun steals some gold
                      */
@@ -262,7 +267,8 @@ attack(THING *mp) {
                     if (purse != lastpurse)
                         msg("your purse feels lighter");
                 }
-                    when 'N': {
+                    break;
+                case 'N': {
                     THING *obj, *steal;
                     int nobj;
 
@@ -284,7 +290,8 @@ attack(THING *mp) {
                         discard(steal);
                     }
                 }
-                    otherwise:
+                    break;
+                default:
                     break;
             }
     } else if (mp->t_type != 'I') {
@@ -548,7 +555,7 @@ remove_mon(coord *mp, THING *tp, bool waskill) {
     for (obj = tp->t_pack; obj != NULL; obj = nexti) {
         nexti = next(obj);
         obj->o_pos = tp->t_pos;
-        detach(tp->t_pack, obj);
+        detach(&tp->t_pack, obj);
         if (waskill)
             fall(obj, FALSE);
         else
@@ -556,7 +563,7 @@ remove_mon(coord *mp, THING *tp, bool waskill) {
     }
     moat(mp->y, mp->x) = NULL;
     mvaddch(mp->y, mp->x, tp->t_oldch);
-    detach(mlist, tp);
+    detach(&mlist, tp);
     if (on(*tp, ISTARGET)) {
         kamikaze = FALSE;
         to_death = FALSE;
@@ -584,7 +591,8 @@ killed(THING *tp, bool pr) {
             player.t_flags &= ~ISHELD;
             vf_hit = 0;
             strcpy(monsters['F' - 'A'].m_stats.s_dmg, "000x0");
-            when 'L': {
+            break;
+        case 'L': {
             THING *gold;
 
             if (fallpos(&tp->t_pos, &tp->t_room->r_gold) && level >= max_level) {
@@ -594,7 +602,7 @@ killed(THING *tp, bool pr) {
                 if (save(VS_MAGIC))
                     gold->o_goldval += GOLDCALC + GOLDCALC
                                        + GOLDCALC + GOLDCALC;
-                attach(tp->t_pack, gold);
+                attach(&tp->t_pack, gold);
             }
         }
     }

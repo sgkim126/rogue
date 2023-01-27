@@ -39,7 +39,7 @@ add_pack(THING *obj, bool silent) {
      */
     if (obj->o_type == SCROLL && obj->o_which == S_SCARE)
         if (obj->o_flags & ISFOUND) {
-            detach(lvl_obj, obj);
+            detach(&lvl_obj, obj);
             mvaddch(hero.y, hero.x, floor_ch());
             chat(hero.y, hero.x) = (proom->r_flags & ISGONE) ? PASSAGE : FLOOR;
             discard(obj);
@@ -159,7 +159,7 @@ pack_room(bool from_floor, THING *obj) {
     }
 
     if (from_floor) {
-        detach(lvl_obj, obj);
+        detach(&lvl_obj, obj);
         mvaddch(hero.y, hero.x, floor_ch());
         chat(hero.y, hero.x) = (proom->r_flags & ISGONE) ? PASSAGE : FLOOR;
     }
@@ -192,7 +192,7 @@ leave_pack(THING *obj, bool newobj, bool all) {
     } else {
         last_pick = NULL;
         pack_used[obj->o_packch - 'a'] = FALSE;
-        detach(pack, obj);
+        detach(&pack, obj);
     }
     return nobj;
 }
@@ -275,7 +275,7 @@ pick_up(char ch) {
                 if (obj == NULL)
                     return;
                 money(obj->o_goldval);
-                detach(lvl_obj, obj);
+                detach(&lvl_obj, obj);
                 discard(obj);
                 proom->r_goldval = 0;
                 break;

@@ -33,11 +33,14 @@ inv_name(THING *obj, bool drop) {
     switch (obj->o_type) {
         case POTION:
             nameit(obj, "potion", p_colors[which], &pot_info[which], nullstr);
-            when RING:
+            break;
+        case RING:
             nameit(obj, "ring", r_stones[which], &ring_info[which], ring_num);
-            when STICK:
+            break;
+        case STICK:
             nameit(obj, ws_type[which], ws_made[which], &ws_info[which], charge_str);
-            when SCROLL:
+            break;
+        case SCROLL:
             if (obj->o_count == 1) {
                 strcpy(pb, "A scroll ");
                 pb = &prbuf[9];
@@ -52,7 +55,8 @@ inv_name(THING *obj, bool drop) {
                 sprintf(pb, "called %s", op->oi_guess);
             else
                 sprintf(pb, "titled '%s'", s_names[which]);
-            when FOOD:
+            break;
+        case FOOD:
             if (which == 1)
                 if (obj->o_count == 1)
                     sprintf(pb, "A%s %s", vowelstr(fruit), fruit);
@@ -62,7 +66,8 @@ inv_name(THING *obj, bool drop) {
                 strcpy(pb, "Some food");
             else
                 sprintf(pb, "%d rations of food", obj->o_count);
-            when WEAPON:
+            break;
+        case WEAPON:
             sp = weap_info[which].oi_name;
             if (obj->o_count > 1)
                 sprintf(pb, "%d ", obj->o_count);
@@ -79,7 +84,8 @@ inv_name(THING *obj, bool drop) {
                 pb = &prbuf[strlen(prbuf)];
                 sprintf(pb, " called %s", obj->o_label);
             }
-            when ARMOR:
+            break;
+        case ARMOR:
             sp = arm_info[which].oi_name;
             if (obj->o_flags & ISKNOW) {
                 sprintf(pb, "%s %s [",
@@ -94,12 +100,15 @@ inv_name(THING *obj, bool drop) {
                 pb = &prbuf[strlen(prbuf)];
                 sprintf(pb, " called %s", obj->o_label);
             }
-            when AMULET:
+            break;
+        case AMULET:
             strcpy(pb, "The Amulet of Yendor");
-            when GOLD:
+            break;
+        case GOLD:
             sprintf(prbuf, "%d Gold pieces", obj->o_goldval);
 #ifdef MASTER
-            otherwise:
+            break;
+        default:
             debug("Picked up something funny %s", unctrl(obj->o_type));
             sprintf(pb, "Something bizarre %s", unctrl(obj->o_type));
 #endif
@@ -146,7 +155,7 @@ drop() {
     /*
      * Link it into the level object list
      */
-    attach(lvl_obj, obj);
+    attach(&lvl_obj, obj);
     chat(hero.y, hero.x) = (char) obj->o_type;
     flat(hero.y, hero.x) |= F_DROPPED;
     obj->o_pos = hero;
@@ -216,24 +225,28 @@ new_thing() {
         case 0:
             cur->o_type = POTION;
             cur->o_which = pick_one(pot_info, MAXPOTIONS);
-            when 1:
+            break;
+        case 1:
             cur->o_type = SCROLL;
             cur->o_which = pick_one(scr_info, MAXSCROLLS);
-            when 2:
+            break;
+        case 2:
             cur->o_type = FOOD;
             no_food = 0;
             if (rnd(10) != 0)
                 cur->o_which = 0;
             else
                 cur->o_which = 1;
-            when 3:
+            break;
+        case 3:
             init_weapon(cur, pick_one(weap_info, MAXWEAPONS));
             if ((r = rnd(100)) < 10) {
                 cur->o_flags |= ISCURSED;
                 cur->o_hplus -= rnd(3) + 1;
             } else if (r < 15)
                 cur->o_hplus += rnd(3) + 1;
-            when 4:
+            break;
+        case 4:
             cur->o_type = ARMOR;
             cur->o_which = pick_one(arm_info, MAXARMORS);
             cur->o_arm = a_class[cur->o_which];
@@ -242,7 +255,8 @@ new_thing() {
                 cur->o_arm += rnd(3) + 1;
             } else if (r < 28)
                 cur->o_arm -= rnd(3) + 1;
-            when 5:
+            break;
+        case 5:
             cur->o_type = RING;
             cur->o_which = pick_one(ring_info, MAXRINGS);
             switch (cur->o_which) {
@@ -254,19 +268,23 @@ new_thing() {
                         cur->o_arm = -1;
                         cur->o_flags |= ISCURSED;
                     }
-                    when R_AGGR:
+                    break;
+                case R_AGGR:
                 case R_TELEPORT:
                     cur->o_flags |= ISCURSED;
             }
-            when 6:
+            break;
+        case 6:
             cur->o_type = STICK;
             cur->o_which = pick_one(ws_info, MAXSTICKS);
             fix_stick(cur);
+            break;
+        default:
 #ifdef MASTER
-            otherwise:
             debug("Picked a bad kind of object");
             wait_for(' ');
 #endif
+            break;
     }
     return cur;
 }
@@ -541,11 +559,14 @@ nothing(char type) {
         switch (type) {
             case POTION:
                 tystr = "potion";
-                when SCROLL:
+                break;
+            case SCROLL:
                 tystr = "scroll";
-                when RING:
+                break;
+            case RING:
                 tystr = "ring";
-                when STICK:
+                break;
+            case STICK:
                 tystr = "stick";
         }
         sprintf(sp, " about any %ss", tystr);
@@ -585,7 +606,6 @@ nameit(THING *obj, char *type, char *which, struct obj_info *op,
  */
 char *
 nullstr(THING *ignored) {
-    NOOP(ignored);
     return "";
 }
 
@@ -610,17 +630,23 @@ pr_list() {
     switch (ch) {
         case POTION:
             pr_spec(pot_info, MAXPOTIONS);
-            when SCROLL:
+            break;
+        case SCROLL:
             pr_spec(scr_info, MAXSCROLLS);
-            when RING:
+            break;
+        case RING:
             pr_spec(ring_info, MAXRINGS);
-            when STICK:
+            break;
+        case STICK:
             pr_spec(ws_info, MAXSTICKS);
-            when ARMOR:
+            break;
+        case ARMOR:
             pr_spec(arm_info, MAXARMORS);
-            when WEAPON:
+            break;
+        case WEAPON:
             pr_spec(weap_info, MAXWEAPONS);
-            otherwise:
+            break;
+        default:
             return;
     }
 }
