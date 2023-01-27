@@ -475,7 +475,8 @@ extern char dir_ch, file_name[], home[], huh[], *inv_t_name[],
 extern int a_class[], count, food_left, hungry_state, inpack,
         inv_type, lastscore, level, max_hit, max_level, mpos,
         n_objs, no_command, no_food, no_move, noscore, ntraps, purse,
-        quiet, vf_hit;
+        quiet;
+extern unsigned int vf_hit;
 
 extern unsigned int numscores;
 
