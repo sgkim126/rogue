@@ -320,7 +320,7 @@ check_level() {
 
 void
 chg_str(int amt) {
-    auto str_t comp;
+    str_t comp;
 
     if (amt == 0)
         return;

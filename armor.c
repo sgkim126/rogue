@@ -18,8 +18,8 @@
  */
 void
 wear() {
-    register THING *obj;
-    register char *sp;
+    THING *obj;
+    char *sp;
 
     if ((obj = get_item("wear", ARMOR)) == NULL)
         return;
@@ -50,7 +50,7 @@ wear() {
  */
 void
 take_off() {
-    register THING *obj;
+    THING *obj;
 
     if ((obj = cur_armor) == NULL) {
         after = FALSE;

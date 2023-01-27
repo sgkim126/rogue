@@ -35,7 +35,7 @@ void
 save_game() {
     FILE *savef;
     int c;
-    auto char buf[MAXSTR];
+    char buf[MAXSTR];
 
     /*
      * get file name
@@ -153,8 +153,8 @@ restore(char *file, char **envp) {
     FILE *inf;
     int syml;
     extern char **environ;
-    auto char buf[MAXSTR];
-    auto STAT sbuf2;
+    char buf[MAXSTR];
+    STAT sbuf2;
     int lines, cols;
 
     if (strcmp(file, "-r") == 0)

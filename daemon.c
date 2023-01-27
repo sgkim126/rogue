@@ -31,7 +31,7 @@ struct delayed_action d_list[MAXDAEMONS] = {
  */
 struct delayed_action *
 d_slot() {
-    register struct delayed_action *dev;
+    struct delayed_action *dev;
 
     for (dev = d_list; dev <= &d_list[MAXDAEMONS - 1]; dev++)
         if (dev->d_type == EMPTY)
@@ -48,7 +48,7 @@ d_slot() {
  */
 struct delayed_action *
 find_slot(void (*func)()) {
-    register struct delayed_action *dev;
+    struct delayed_action *dev;
 
     for (dev = d_list; dev <= &d_list[MAXDAEMONS - 1]; dev++)
         if (dev->d_type != EMPTY && func == dev->d_func)
@@ -62,7 +62,7 @@ find_slot(void (*func)()) {
  */
 void
 start_daemon(void (*func)(), int arg, int type) {
-    register struct delayed_action *dev;
+    struct delayed_action *dev;
 
     dev = d_slot();
     dev->d_type = type;
@@ -77,7 +77,7 @@ start_daemon(void (*func)(), int arg, int type) {
  */
 void
 kill_daemon(void (*func)()) {
-    register struct delayed_action *dev;
+    struct delayed_action *dev;
 
     if ((dev = find_slot(func)) == NULL)
         return;
@@ -94,7 +94,7 @@ kill_daemon(void (*func)()) {
  */
 void
 do_daemons(int flag) {
-    register struct delayed_action *dev;
+    struct delayed_action *dev;
 
     /*
      * Loop through the devil list
@@ -113,7 +113,7 @@ do_daemons(int flag) {
  */
 void
 fuse(void (*func)(), int arg, int time, int type) {
-    register struct delayed_action *wire;
+    struct delayed_action *wire;
 
     wire = d_slot();
     wire->d_type = type;
@@ -128,7 +128,7 @@ fuse(void (*func)(), int arg, int time, int type) {
  */
 void
 lengthen(void (*func)(), int xtime) {
-    register struct delayed_action *wire;
+    struct delayed_action *wire;
 
     if ((wire = find_slot(func)) == NULL)
         return;
@@ -141,7 +141,7 @@ lengthen(void (*func)(), int xtime) {
  */
 void
 extinguish(void (*func)()) {
-    register struct delayed_action *wire;
+    struct delayed_action *wire;
 
     if ((wire = find_slot(func)) == NULL)
         return;
@@ -154,7 +154,7 @@ extinguish(void (*func)()) {
  */
 void
 do_fuses(int flag) {
-    register struct delayed_action *wire;
+    struct delayed_action *wire;
 
     /*
      * Step though the list

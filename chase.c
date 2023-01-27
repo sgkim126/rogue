@@ -24,7 +24,7 @@ static coord ch_ret;                /* Where chasing takes you */
  */
 void
 runners() {
-    register THING *tp;
+    THING *tp;
     THING *next;
     bool wastarget;
     static coord orig_pos;
@@ -104,12 +104,12 @@ relocate(THING *th, coord *new_loc) {
  */
 int
 do_chase(THING *th) {
-    register coord *cp;
-    register struct room *rer, *ree;    /* room of chaser, room of chasee */
-    register int mindist = 32767, curdist;
-    register bool stoprun = FALSE;    /* TRUE means we are there */
-    register bool door;
-    register THING *obj;
+    coord *cp;
+    struct room *rer, *ree;    /* room of chaser, room of chasee */
+    int mindist = 32767, curdist;
+    bool stoprun = FALSE;    /* TRUE means we are there */
+    bool door;
+    THING *obj;
     static coord this;            /* Temporary destination for chaser */
 
     rer = th->t_room;        /* Find room of chaser */
@@ -255,7 +255,7 @@ see_monst(THING *mp) {
  */
 void
 runto(coord *runner) {
-    register THING *tp;
+    THING *tp;
 
     /*
      * If we couldn't find him, something is funny
@@ -282,12 +282,12 @@ runto(coord *runner) {
  */
 bool
 chase(THING *tp, coord *ee) {
-    register THING *obj;
-    register int x, y;
-    register int curdist, thisdist;
-    register coord *er = &tp->t_pos;
-    register char ch;
-    register int plcnt = 1;
+    THING *obj;
+    int x, y;
+    int curdist, thisdist;
+    coord *er = &tp->t_pos;
+    char ch;
+    int plcnt = 1;
     static coord tryp;
 
     /*
@@ -313,7 +313,7 @@ chase(THING *tp, coord *ee) {
          * closest to the chasee.
          */
     else {
-        register int ey, ex;
+        int ey, ex;
         /*
          * This will eventually hold where we move to get closer
          * If we can't find an empty spot, we stay where we are.
@@ -382,8 +382,8 @@ chase(THING *tp, coord *ee) {
  */
 struct room *
 roomin(coord *cp) {
-    register struct room *rp;
-    register char *fp;
+    struct room *rp;
+    char *fp;
 
 
     fp = &flat(cp->y, cp->x);
@@ -423,7 +423,7 @@ diag_ok(coord *sp, coord *ep) {
  */
 bool
 cansee(int y, int x) {
-    register struct room *rer;
+    struct room *rer;
     static coord tp;
 
     if (on(player, ISBLIND))
@@ -450,8 +450,8 @@ cansee(int y, int x) {
  */
 coord *
 find_dest(THING *tp) {
-    register THING *obj;
-    register int prob;
+    THING *obj;
+    int prob;
 
     if ((prob = monsters[tp->t_type - 'A'].m_carry) <= 0 || tp->t_room == proom
         || see_monst(tp))
