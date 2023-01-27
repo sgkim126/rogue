@@ -131,6 +131,8 @@ over:
                         dy = 0;
                         turnref();
                         goto over;
+                    default:
+                        break;
                 }
             }
             running = FALSE;
@@ -339,6 +341,9 @@ be_trapped(coord *tc) {
         case T_RUST:
             msg("a gush of water hits you on the head");
             rust_armor(cur_armor);
+            break;
+        default:
+            break;
     }
     flush_type();
     return tr;

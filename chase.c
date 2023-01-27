@@ -398,7 +398,6 @@ roomin(coord *cp) {
     msg("in some bizarre place (%d, %d)", unc(*cp));
 #ifdef MASTER
     abort();
-    return NULL;
 #else
     return NULL;
 #endif

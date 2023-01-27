@@ -381,6 +381,7 @@ discovered() {
 
 #define MAX4(a, b, c, d)    (a > b ? (a > c ? (a > d ? a : d) : (c > d ? c : d)) : (b > c ? (b > d ? b : d) : (c > d ? c : d)))
 
+void set_order(int *order, int numthings);
 
 void
 print_disc(char type) {

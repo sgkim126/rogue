@@ -11,7 +11,6 @@
  */
 
 #include <curses.h>
-#include <ctype.h>
 #include "rogue.h"
 
 typedef struct {
@@ -223,7 +222,6 @@ quaff() {
 
     if (discardit)
         discard(obj);
-    return;
 }
 
 /*

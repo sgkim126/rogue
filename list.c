@@ -11,7 +11,6 @@
  */
 
 #include <stdlib.h>
-#include <curses.h>
 #include "rogue.h"
 
 #ifdef MASTER

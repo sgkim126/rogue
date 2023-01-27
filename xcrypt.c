@@ -49,7 +49,6 @@
  * against crypt.o exportable or re-exportable from the USA.
  */
 
-#include <sys/types.h>
 #include <string.h>
 
 unsigned int md_endian = 0x01020304;

@@ -13,7 +13,6 @@
 
 #include <curses.h>
 #include <string.h>
-#include <ctype.h>
 #include "rogue.h"
 
 /*

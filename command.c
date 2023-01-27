@@ -256,7 +256,6 @@ over:
                     }
                     goto over;
                 }
-                    break;
                 case 'F':
                     kamikaze = TRUE;
                     /* FALLTHROUGH */
@@ -392,7 +391,7 @@ over:
                     after = FALSE;
                     save_game();
                     break;
-                case '.':;            /* Rest command */
+                case '.':             /* Rest command */
                     break;
                 case ' ':
                     after = FALSE;    /* "Legal" illegal command */
@@ -645,7 +644,6 @@ search() {
                             *fp |= F_SEEN;
                         }
                         goto foundone;
-                        break;
                     case ' ':
                         if (rnd(3 + probinc) != 0)
                             break;
@@ -847,17 +845,14 @@ call() {
             op = &ring_info[obj->o_which];
             elsewise = r_stones[obj->o_which];
             goto norm;
-            break;
         case POTION:
             op = &pot_info[obj->o_which];
             elsewise = p_colors[obj->o_which];
             goto norm;
-            break;
         case SCROLL:
             op = &scr_info[obj->o_which];
             elsewise = s_names[obj->o_which];
             goto norm;
-            break;
         case STICK:
             op = &ws_info[obj->o_which];
             elsewise = ws_made[obj->o_which];
@@ -870,7 +865,6 @@ call() {
         case FOOD:
             msg("you can't call that anything");
             return;
-            break;
         default:
             guess = &obj->o_label;
             know = NULL;

@@ -38,12 +38,8 @@
  *            for high load average.
  */
 
-#include <signal.h>
-#include <sys/types.h>
 #include <sys/stat.h>
-#include <limits.h>
 #include <string.h>
-#include <fcntl.h>
 #include <errno.h>
 #include <time.h>
 #include <curses.h>

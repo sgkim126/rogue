@@ -89,8 +89,6 @@
 #endif
 #endif
 
-#include <curses.h> /* AIX requires curses.h be included before term.h */
-
 #if defined(HAVE_TERM_H)
 
 #include <term.h>
@@ -106,8 +104,6 @@
 #endif
 
 #include <ctype.h>
-#include <fcntl.h>
-#include <limits.h>
 #include <sys/stat.h>
 #include <signal.h>
 #include "extern.h"
@@ -596,16 +592,6 @@ md_shellescape() {
 #endif
 }
 
-int
-directory_exists(char *dirname) {
-    struct stat sb;
-
-    if (stat(dirname, &sb) == 0) /* path exists */
-        return (sb.st_mode &__S_IFDIR);
-
-    return (0);
-}
-
 char *
 md_getrealname(int uid) {
     static char uidstr[20];
@@ -756,25 +742,6 @@ md_suspchar() {
 #else
     return(0);
 #endif
-}
-
-int
-md_setsuspchar(int c) {
-#if defined(VSUSP)            /* POSIX has priority */
-    struct termios attr;
-    tcgetattr(STDIN_FILENO, &attr);
-    attr.c_cc[VSUSP] = c;
-    tcgetattr(STDIN_FILENO, &attr);
-#elif defined(TIOCSLTC)
-    struct ltchars ltc;
-    ioctl(1, TIOCGLTC, &ltc);
-    ltc.t_suspc = c;
-    ioctl(1, TIOCSLTC, &ltc);
-#else
-    NOOP(c);
-#endif
-
-    return (0);
 }
 
 /*
@@ -1249,6 +1216,8 @@ md_readchar() {
                 case 'u':
                     ch = '.';
                     break;
+                default:
+                    break;
             }
 
             if (mode != M_KEYPAD)
@@ -1281,13 +1250,11 @@ md_readchar() {
                 ch = 'u';
                 break;
             case KEY_END    :
-                ch = 'b';
-                break;
 #ifdef KEY_LL
             case KEY_LL        :
+#endif
                 ch = 'b';
                 break;
-#endif
             case KEY_NPAGE  :
                 ch = 'n';
                 break;
@@ -1365,24 +1332,20 @@ md_readchar() {
 
 #ifndef CTL_PAD1
                 /* MSYS rxvt console */
-            case 511         :
+            case 511: /* Shift Dn */
+            case 512: /* Ctl Down */
                 ch = CTRL('J');
-                break; /* Shift Dn */
-            case 512         :
-                ch = CTRL('J');
-                break; /* Ctl Down */
+                break;
             case 514         :
                 ch = CTRL('H');
                 break; /* Ctl Left */
             case 516         :
                 ch = CTRL('L');
                 break; /* Ctl Right*/
-            case 518         :
+            case 518:  /* Shift Up */
+            case 519:  /* Ctl Up   */
                 ch = CTRL('K');
-                break; /* Shift Up */
-            case 519         :
-                ch = CTRL('K');
-                break; /* Ctl Up   */
+                break;
 #endif
 
 #ifdef CTL_PAD1
@@ -1423,6 +1386,8 @@ md_readchar() {
                 ch = CTRL('H');
                 break;
 #endif
+            default:
+                break;
         }
 
         break;

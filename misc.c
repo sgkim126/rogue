@@ -38,7 +38,7 @@ look(bool wakeup) {
     static bool done = FALSE;
 
     if (done)
-    return;
+        return;
     done = TRUE;
 # endif /* DEBUG */
     passcount = 0;
@@ -145,6 +145,8 @@ look(bool wakeup) {
                         case 'b':
                             if ((y - x) - diffhero <= -1)
                                 continue;
+                        default:
+                            break;
                     }
                     switch (ch) {
                         case DOOR:
@@ -495,7 +497,6 @@ get_dir() {
                     last_dir = '\0';
                     reset_last();
                     return FALSE;
-                    break;
                 default:
                     mpos = 0;
                     msg(prompt);
