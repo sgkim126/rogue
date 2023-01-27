@@ -343,7 +343,7 @@ passnum() {
         rp->r_nexits = 0;
     for (rp = rooms; rp < &rooms[MAXROOMS]; rp++)
         for (i = 0; i < rp->r_nexits; i++) {
-            newpnum++;
+            newpnum = TRUE;
             numpass(rp->r_exit[i].y, rp->r_exit[i].x);
         }
 }
