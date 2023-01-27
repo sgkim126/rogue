@@ -5,7 +5,7 @@
  *
  * See the file LICENSE.TXT for full copyright and licensing information.
  *
- * @(#)main.c	4.22 (Berkeley) 02/05/99
+ * @(#)main.c 4.22 (Berkeley) 02/05/99
  */
 
 #include <stdlib.h>
@@ -17,11 +17,10 @@
 
 /*
  * main:
- *	The main program, of course
+ *      The main program, of course
  */
 int
-main(int argc, char **argv, char **envp)
-{
+main(int argc, char **argv, char **envp) {
     char *env;
     int lowtime;
 
@@ -32,13 +31,12 @@ main(int argc, char **argv, char **envp)
      * Check to see if he is a wizard
      */
     if (argc >= 2 && argv[1][0] == '\0')
-	if (strcmp(PASSWD, md_crypt(md_getpass("wizard's password: "), "mT")) == 0)
-	{
-	    wizard = TRUE;
-	    player.t_flags |= SEEMONST;
-	    argv++;
-	    argc--;
-	}
+        if (strcmp(PASSWD, md_crypt(md_getpass("wizard's password: "), "mT")) == 0) {
+            wizard = TRUE;
+            player.t_flags |= SEEMONST;
+            argv++;
+            argc--;
+        }
 
 #endif
 
@@ -52,23 +50,25 @@ main(int argc, char **argv, char **envp)
     strcat(file_name, "rogue.save");
 
     if ((env = getenv("ROGUEOPTS")) != NULL)
-	parse_opts(env);
+        parse_opts(env);
     if (env == NULL || whoami[0] == '\0')
         strucpy(whoami, md_getusername(), (int) strlen(md_getusername()));
     lowtime = (int) time(NULL);
 #ifdef MASTER
     if (wizard && getenv("SEED") != NULL)
-	dnum = atoi(getenv("SEED"));
+        dnum = atoi(getenv("SEED"));
     else
+        dnum = lowtime + md_getpid();
+#else
+    dnum = lowtime + md_getpid();
 #endif
-	dnum = lowtime + md_getpid();
     seed = dnum;
 
     open_score();
 
-	/* 
-     * Drop setuid/setgid after opening the scoreboard file. 
-     */ 
+    /*
+     * Drop setuid/setgid after opening the scoreboard file.
+     */
 
     md_normaluser();
 
@@ -76,59 +76,56 @@ main(int argc, char **argv, char **envp)
      * check for print-score option
      */
 
-	md_normaluser(); /* we drop any setgid/setuid priveldges here */
+    md_normaluser(); /* we drop any setgid/setuid priveldges here */
 
-    if (argc == 2)
-    {
-	if (strcmp(argv[1], "-s") == 0)
-	{
-	    noscore = TRUE;
-	    score(0, -1, 0);
-	    exit(0);
-	}
-	else if (strcmp(argv[1], "-d") == 0)
-	{
-	    dnum = rnd(100);	/* throw away some rnd()s to break patterns */
-	    while (--dnum)
-		rnd(100);
-	    purse = rnd(100) + 1;
-	    level = rnd(100) + 1;
-	    initscr();
-	    getltchars();
-	    death(death_monst());
-	    exit(0);
-	}
+    if (argc == 2) {
+        if (strcmp(argv[1], "-s") == 0) {
+            noscore = TRUE;
+            score(0, -1, 0);
+            exit(0);
+        } else if (strcmp(argv[1], "-d") == 0) {
+            dnum = rnd(100);    /* throw away some rnd()s to break patterns */
+            while (--dnum)
+                rnd(100);
+            purse = rnd(100) + 1;
+            level = rnd(100) + 1;
+            initscr();
+            getltchars();
+            death(death_monst());
+            exit(0);
+        }
     }
 
-    init_check();			/* check for legal startup */
+    init_check();            /* check for legal startup */
     if (argc == 2)
-	if (!restore(argv[1], envp))	/* Note: restore will never return */
-	    my_exit(1);
+        if (!restore(argv[1], envp))    /* Note: restore will never return */
+            my_exit(1);
 #ifdef MASTER
     if (wizard)
-	printf("Hello %s, welcome to dungeon #%d", whoami, dnum);
+        printf("Hello %s, welcome to dungeon #%d", whoami, dnum);
     else
+        printf("Hello %s, just a moment while I dig the dungeon...", whoami);
+#else
+    printf("Hello %s, just a moment while I dig the dungeon...", whoami);
 #endif
-	printf("Hello %s, just a moment while I dig the dungeon...", whoami);
     fflush(stdout);
 
-    initscr();				/* Start up cursor package */
-    init_probs();			/* Set up prob tables for objects */
-    init_player();			/* Set up initial player stats */
-    init_names();			/* Set up names of scrolls */
-    init_colors();			/* Set up colors of potions */
-    init_stones();			/* Set up stone settings of rings */
-    init_materials();			/* Set up materials of wands */
+    initscr();                /* Start up cursor package */
+    init_probs();            /* Set up prob tables for objects */
+    init_player();            /* Set up initial player stats */
+    init_names();            /* Set up names of scrolls */
+    init_colors();            /* Set up colors of potions */
+    init_stones();            /* Set up stone settings of rings */
+    init_materials();            /* Set up materials of wands */
     setup();
 
     /*
      * The screen must be at least NUMLINES x NUMCOLS
      */
-    if (LINES < NUMLINES || COLS < NUMCOLS)
-    {
-	printf("\nSorry, the screen must be at least %dx%d\n", NUMLINES, NUMCOLS);
-	endwin();
-	my_exit(1);
+    if (LINES < NUMLINES || COLS < NUMCOLS) {
+        printf("\nSorry, the screen must be at least %dx%d\n", NUMLINES, NUMCOLS);
+        endwin();
+        my_exit(1);
     }
 
     /*
@@ -140,7 +137,7 @@ main(int argc, char **argv, char **envp)
 #ifdef MASTER
     noscore = wizard;
 #endif
-    new_level();			/* Draw current level */
+    new_level();            /* Draw current level */
     /*
      * Start up daemons and fuses
      */
@@ -149,29 +146,27 @@ main(int argc, char **argv, char **envp)
     fuse(swander, 0, WANDERTIME, AFTER);
     start_daemon(stomach, 0, AFTER);
     playit();
-    return(0);
+    return (0);
 }
 
 /*
  * endit:
- *	Exit the program abnormally.
+ *      Exit the program abnormally.
  */
 
 void
-endit(int sig)
-{
+endit(int sig) {
     NOOP(sig);
     fatal("Okay, bye bye!\n");
 }
 
 /*
  * fatal:
- *	Exit the program, printing a message.
+ *      Exit the program, printing a message.
  */
 
 void
-fatal(char *s)
-{
+fatal(char *s) {
     mvaddstr(LINES - 2, 0, s);
     refresh();
     endwin();
@@ -180,40 +175,37 @@ fatal(char *s)
 
 /*
  * rnd:
- *	Pick a very random number.
+ *      Pick a very random number.
  */
 int
-rnd(int range)
-{
+rnd(int range) {
     return range == 0 ? 0 : abs((int) RN) % range;
 }
 
 /*
  * roll:
- *	Roll a number of dice
+ *      Roll a number of dice
  */
-int 
-roll(int number, int sides)
-{
+int
+roll(int number, int sides) {
     int dtotal = 0;
 
     while (number--)
-	dtotal += rnd(sides)+1;
+        dtotal += rnd(sides) + 1;
     return dtotal;
 }
 
 /*
  * tstp:
- *	Handle stop and start signals
+ *      Handle stop and start signals
  */
 
 void
-tstp(int ignored)
-{
+tstp(int ignored) {
     int y, x;
     int oy, ox;
 
-	NOOP(ignored);
+    NOOP(ignored);
 
     /*
      * leave nicely
@@ -223,15 +215,15 @@ tstp(int ignored)
     endwin();
     resetltchars();
     fflush(stdout);
-	md_tstpsignal();
+    md_tstpsignal();
 
     /*
      * start back up again
      */
-	md_tstpresume();
+    md_tstpresume();
     raw();
     noecho();
-    keypad(stdscr,1);
+    keypad(stdscr, 1);
     playltchars();
     clearok(curscr, TRUE);
     wrefresh(curscr);
@@ -244,51 +236,48 @@ tstp(int ignored)
 
 /*
  * playit:
- *	The main loop of the program.  Loop until the game is over,
- *	refreshing things and looking at the proper times.
+ *      The main loop of the program.  Loop until the game is over,
+ *      refreshing things and looking at the proper times.
  */
 
 void
-playit()
-{
+playit() {
     char *opts;
 
     /*
      * set up defaults for slow terminals
      */
 
-    if (baudrate() <= 1200)
-    {
-	terse = TRUE;
-	jump = TRUE;
-	see_floor = FALSE;
+    if (baudrate() <= 1200) {
+        terse = TRUE;
+        jump = TRUE;
+        see_floor = FALSE;
     }
 
     if (md_hasclreol())
-	inv_type = INV_CLEAR;
+        inv_type = INV_CLEAR;
 
     /*
      * parse environment declaration of options
      */
     if ((opts = getenv("ROGUEOPTS")) != NULL)
-	parse_opts(opts);
+        parse_opts(opts);
 
 
     oldpos = hero;
     oldrp = roomin(&hero);
     while (playing)
-	command();			/* Command execution */
+        command();            /* Command execution */
     endit(0);
 }
 
 /*
  * quit:
- *	Have player make certain, then exit.
+ *      Have player make certain, then exit.
  */
 
 void
-quit(int sig)
-{
+quit(int sig) {
     int oy, ox;
 
     NOOP(sig);
@@ -297,50 +286,45 @@ quit(int sig)
      * Reset the signal in case we got here via an interrupt
      */
     if (!q_comm)
-	mpos = 0;
+        mpos = 0;
     getyx(curscr, oy, ox);
     msg("really quit?");
-    if (readchar() == 'y')
-    {
-	signal(SIGINT, leave);
-	clear();
-	mvprintw(LINES - 2, 0, "You quit with %d gold pieces", purse);
-	move(LINES - 1, 0);
-	refresh();
-	score(purse, 1, 0);
-	my_exit(0);
-    }
-    else
-    {
-	move(0, 0);
-	clrtoeol();
-	status();
-	move(oy, ox);
-	refresh();
-	mpos = 0;
-	count = 0;
-	to_death = FALSE;
+    if (readchar() == 'y') {
+        signal(SIGINT, leave);
+        clear();
+        mvprintw(LINES - 2, 0, "You quit with %d gold pieces", purse);
+        move(LINES - 1, 0);
+        refresh();
+        score(purse, 1, 0);
+        my_exit(0);
+    } else {
+        move(0, 0);
+        clrtoeol();
+        status();
+        move(oy, ox);
+        refresh();
+        mpos = 0;
+        count = 0;
+        to_death = FALSE;
     }
 }
 
 /*
  * leave:
- *	Leave quickly, but curteously
+ *      Leave quickly, but curteously
  */
 
 void
-leave(int sig)
-{
+leave(int sig) {
     static char buf[BUFSIZ];
 
     NOOP(sig);
 
-    setbuf(stdout, buf);	/* throw away pending output */
+    setbuf(stdout, buf);    /* throw away pending output */
 
-    if (!isendwin())
-    {
-	mvcur(0, COLS - 1, LINES - 1, 0);
-	endwin();
+    if (!isendwin()) {
+        mvcur(0, COLS - 1, LINES - 1, 0);
+        endwin();
     }
 
     putchar('\n');
@@ -349,16 +333,15 @@ leave(int sig)
 
 /*
  * shell:
- *	Let them escape for a while
+ *      Let them escape for a while
  */
 
 void
-shell()
-{
+shell() {
     /*
      * Set the terminal back to original mode
      */
-    move(LINES-1, 0);
+    move(LINES - 1, 0);
     refresh();
     endwin();
     resetltchars();
@@ -375,7 +358,7 @@ shell()
     fflush(stdout);
     noecho();
     raw();
-    keypad(stdscr,1);
+    keypad(stdscr, 1);
     playltchars();
     in_shell = FALSE;
     wait_for('\n');
@@ -384,12 +367,11 @@ shell()
 
 /*
  * my_exit:
- *	Leave the process properly
+ *      Leave the process properly
  */
 
 void
-my_exit(int st)
-{
+my_exit(int st) {
     resetltchars();
     exit(st);
 }
