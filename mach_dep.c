@@ -381,7 +381,10 @@ over:
         printf("The score file is very busy.  Do you want to wait longer\n");
         printf("for it to become free so your score can get posted?\n");
         printf("If so, type \"y\"\n");
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-result"
         (void) fgets(prbuf, MAXSTR, stdin);
+#pragma GCC diagnostic pop
         if (prbuf[0] == 'y')
             for (;;) {
                 if ((lfd = fopen(lockfile, "w+")) != 0)

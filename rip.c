@@ -167,7 +167,10 @@ score(int amount, int flags, char monst) {
                 printf(" (%s)", md_getrealname(scp->sc_uid));
             } else if (prflags == 2) {
                 fflush(stdout);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-result"
                 (void) fgets(prbuf, 10, stdin);
+#pragma GCC diagnostic pop
                 if (prbuf[0] == 'd') {
                     for (sc2 = scp; sc2 < endp - 1; sc2++)
                         *sc2 = *(sc2 + 1);
@@ -249,7 +252,10 @@ death(char monst) {
     score(purse, amulet ? 3 : 0, monst);
     printf("[Press return to continue]");
     fflush(stdout);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-result"
     (void) fgets(prbuf, 10, stdin);
+#pragma GCC diagnostic pop
     my_exit(0);
 }
 
