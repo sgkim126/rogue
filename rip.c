@@ -134,7 +134,10 @@ score(int amount, int flags, char monst) {
                 sc2--;
             }
             scp->sc_score = amount;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
             strncpy(scp->sc_name, whoami, MAXSTR);
+#pragma GCC diagnostic pop
             scp->sc_flags = flags;
             if (flags == 2)
                 scp->sc_level = max_level;

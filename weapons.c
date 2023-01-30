@@ -152,8 +152,11 @@ init_weapon(THING *weap, int which) {
     weap->o_type = WEAPON;
     weap->o_which = which;
     iwp = &init_dam[which];
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
     strncpy(weap->o_damage, iwp->iw_dam, sizeof(weap->o_damage));
     strncpy(weap->o_hurldmg, iwp->iw_hrl, sizeof(weap->o_hurldmg));
+#pragma GCC diagnostic pop
     weap->o_launch = iwp->iw_launch;
     weap->o_flags = iwp->iw_flags;
     weap->o_hplus = 0;
